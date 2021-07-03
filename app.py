@@ -24,16 +24,37 @@ async def index_page(request: Request):
 async def index():
     return { 'message': 'Hello World' }
 
-<<<<<<< HEAD
+
 @app.get('/goog')
 async def goog():
     res = google_account()
     return res
-=======
+
 @app.post("/items/")
 async def create_item(item: Item):
     return item
->>>>>>> 8c75444523da58e276fa55f974b72121538a074a
+
+@app.get('/students/{student_id}')
+async def index(student_id: 1):
+    sql="select * from Student where id=1"
+    return cursor.execute(sql)
+
+@app.get('/posts')
+async def index():
+    return student
+
+@app.post("/users")
+async def create_item(user: User):
+    return user
+
+@app.post("/posts")
+async def create_item(post: Post):
+    return post
+
+@app.post("/companies")
+async def create_item(company: Company):
+    return company
+>>>>>>> e387d742823c39eb6d3f77e4ff38f1ab9e2938d2
 
 if __name__ == '__main__':
     uvicorn.run(app, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))

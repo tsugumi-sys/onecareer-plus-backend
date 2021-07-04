@@ -9,7 +9,7 @@ import os
 from index import index
 
 # GET Method
-from google_sheets import get_all_posts, google_account
+from google_sheets import get_all_posts, google_account, search_posts
 
 class Item(BaseModel):
     name: str
@@ -38,10 +38,15 @@ async def index():
 async def getAllPosts():
     res = get_all_posts(RANGE_NAME='Posts!A1:H')
     return res
+
+@app.get('/search_posts/')
+async def searchPosts():
+    res = search_posts(RANGE_NAME='Posts!A1:H')
+    return res
     
 @app.get('/goog')
 async def goog():
-    res = google_account(RANGE_NAME='Users!A1:B')
+    res = google_account(RANGE_NAME='Posts!A1:H')
     return res
 
 @app.post("/items/")

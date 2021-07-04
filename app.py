@@ -41,7 +41,7 @@ async def getAllPosts():
     
 @app.get('/goog')
 async def goog():
-    res = google_account(RANGE_NAME='Users!A1:B')
+    res = google_account(RANGE_NAME='Users!A:A')
     return res
 
 @app.post("/items/")

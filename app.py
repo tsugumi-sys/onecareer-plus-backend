@@ -6,12 +6,19 @@ from pydantic import BaseModel
 import uvicorn
 import os
 from google_test import google_account
+from index import index
 
 class Item(BaseModel):
     name: str
     description: Optional[str] = None
     price: float
     tax: Optional[float] = None
+
+class User(BaseModel):
+    name: str
+    user_type: str
+    major: str
+    industry: str
 
 app = FastAPI()
 
@@ -34,27 +41,22 @@ async def goog():
 async def create_item(item: Item):
     return item
 
-@app.get('/students/{student_id}')
-async def index(student_id: 1):
-    sql="select * from Student where id=1"
-    return cursor.execute(sql)
-
-@app.get('/posts')
-async def index():
-    return student
+# @app.get('/students/{student_id}')
+# async def index(student_id: 1):
+#     sql="select * from Student where id=1"
+#     return cursor.execute(sql)
 
 @app.post("/users")
 async def create_item(user: User):
     return user
 
-@app.post("/posts")
-async def create_item(post: Post):
-    return post
+# @app.post("/posts")
+# async def create_item(post: Post):
+#     return post
 
-@app.post("/companies")
-async def create_item(company: Company):
-    return company
->>>>>>> e387d742823c39eb6d3f77e4ff38f1ab9e2938d2
+# @app.post("/companies")
+# async def create_item(company: Company):
+#     return company
 
 if __name__ == '__main__':
     uvicorn.run(app, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))

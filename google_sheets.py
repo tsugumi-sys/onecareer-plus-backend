@@ -36,7 +36,7 @@ def get_all_posts(RANGE_NAME='Posts!A1:H'):
         'data':values
     }
 
-def search_posts(RANGE_NAME='Posts!A1:H'):
+def search_posts(bf_industry_id, af_industry_id, RANGE_NAME='Posts!A1:H'):
     creds = service_account.Credentials.from_service_account_file('google_searvice_account.json', scopes=SCOPES)#Credentials.from_authorized_user_file('google_searvice_account.json', SCOPES)
     service = build('sheets', 'v4', credentials=creds)
     sheet = service.spreadsheets()
@@ -44,13 +44,34 @@ def search_posts(RANGE_NAME='Posts!A1:H'):
     values = result.get('values', [])
     res = []
 
-    for i in values:
-        if i[2] == "1":
-            res.append(i) 
+    if bf_industry_id and af_industry_id:
+        for i in values:
+            if i[2] == f"{bf_industry_id}" and i[3] == f"{af_industry_id}":
+                res.append(i)
 
-    return {
-        'data':res
-    }
+        return {
+            'data':res
+        }
+    elif bf_industry_id:
+        for i in values:
+            if i[2] == f"{bf_industry_id}":
+                res.append(i)
+
+        return {
+            'data':res
+        }
+    elif af_industry_id:
+        for i in values:
+            if i[3] == f"{af_industry_id}":
+                res.append(i)
+
+        return {
+            'data':res
+        }
+    else:
+        return {
+            'data': res
+        }
 
 if __name__ == '__main__':
     google_account()

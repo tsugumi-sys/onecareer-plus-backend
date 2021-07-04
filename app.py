@@ -11,18 +11,6 @@ from index import index
 # GET Method
 from google_sheets import get_all_posts, google_account, search_posts
 
-class Item(BaseModel):
-    name: str
-    description: Optional[str] = None
-    price: float
-    tax: Optional[float] = None
-
-class User(BaseModel):
-    name: str
-    user_type: str
-    major: str
-    industry: str
-
 app = FastAPI()
 
 templates = Jinja2Templates(directory='templates')
@@ -30,9 +18,6 @@ templates = Jinja2Templates(directory='templates')
 async def index_page(request: Request):
     return templates.TemplateResponse('index.html', {'request': request})
 
-@app.get('/test')
-async def index():
-    return { 'message': 'Hello World' }
 
 @app.get('/get_all_posts/')
 async def getAllPosts():
@@ -40,35 +25,23 @@ async def getAllPosts():
     return res
 
 @app.get('/search_posts/')
-async def searchPosts():
-    res = search_posts(RANGE_NAME='Posts!A1:H')
+async def searchPosts(
+    bf_industry_id: Optional[int] = Query(
+        None,
+        title='Indutry ID of before',
+        description='bf_industry_idの値'
+    ),
+    af_industry_id: Optional[int] = Query(
+        None,
+        title='Indutry ID of after',
+        description='af_industry_idの値'
+    )
+):
+    res = search_posts(RANGE_NAME='Posts!A1:H', bf_industry_id=bf_industry_id, af_industry_id=af_industry_id)
     return res
+
     
-@app.get('/goog')
-async def goog():
-    res = google_account(RANGE_NAME='Posts!A1:H')
-    return res
 
-@app.post("/items/")
-async def create_item(item: Item):
-    return item
-
-# @app.get('/students/{student_id}')
-# async def index(student_id: 1):
-#     sql="select * from Student where id=1"
-#     return cursor.execute(sql)
-
-@app.post("/users")
-async def create_item(user: User):
-    return user
-
-# @app.post("/posts")
-# async def create_item(post: Post):
-#     return post
-
-# @app.post("/companies")
-# async def create_item(company: Company):
-#     return company
 
 if __name__ == '__main__':
     uvicorn.run(app, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))

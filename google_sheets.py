@@ -12,9 +12,9 @@ from google.oauth2 import service_account
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 SHEET_ID = '1WCW3nC3Xv8JU7HKGmYpIq5AwS2qBb5DSMfXSKh6YcMw'
-# RANGE_NAME = 'Users!A1:B'
+#RANGE_NAME = 'Users!A1:B'
 
-def google_account(RANGE_NAME):
+def google_account(RANGE_NAME='Users!A1:B'):
     creds = service_account.Credentials.from_service_account_file('google_searvice_account.json', scopes=SCOPES)#Credentials.from_authorized_user_file('google_searvice_account.json', SCOPES)
     service = build('sheets', 'v4', credentials=creds)
     sheet = service.spreadsheets()
@@ -23,6 +23,17 @@ def google_account(RANGE_NAME):
 
     return {
         'res':values
+    }
+
+def get_all_posts(RANGE_NAME='Posts!A1:H'):
+    creds = service_account.Credentials.from_service_account_file('google_searvice_account.json', scopes=SCOPES)#Credentials.from_authorized_user_file('google_searvice_account.json', SCOPES)
+    service = build('sheets', 'v4', credentials=creds)
+    sheet = service.spreadsheets()
+    result = sheet.values().get(spreadsheetId=SHEET_ID, range=RANGE_NAME).execute()
+    values = result.get('values', [])
+
+    return {
+        'data':values
     }
 
 if __name__ == '__main__':

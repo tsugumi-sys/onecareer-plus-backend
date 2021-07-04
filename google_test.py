@@ -12,9 +12,9 @@ from google.oauth2 import service_account
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 SHEET_ID = '1WCW3nC3Xv8JU7HKGmYpIq5AwS2qBb5DSMfXSKh6YcMw'
-RANGE_NAME = 'Users!A1:B'
+# RANGE_NAME = 'Users!A1:B'
 
-def google_account():
+def google_account(RANGE_NAME):
     creds = service_account.Credentials.from_service_account_file('google_searvice_account.json', scopes=SCOPES)#Credentials.from_authorized_user_file('google_searvice_account.json', SCOPES)
     service = build('sheets', 'v4', credentials=creds)
     sheet = service.spreadsheets()
